@@ -1,13 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-
+    <head>
+    <title>Fire Extinguisher Locator</title>
+    <!-- Papa Parse for CSV parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <head>
-  <meta charset="UTF-8">
-  <title>Septona Main</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Extinguisher Locator</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <img src="./buildings/SIGN_FIRE.jpg" alt="местоположение на всички пожарогасители" id="responsive-image">
+    <div class="app-container">
+        <!-- Map Container -->
+        <div id="map" role="application" aria-label="Factory fire extinguisher map"></div>
+        
+        <!-- Search Bar -->
+        <div class="search-container" role="search">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search fire extinguisher ID..." class="form-control" aria-label="Search fire extinguisher ID" autocomplete="off">
+                <button id="clearSearch" class="btn btn--secondary btn--sm" aria-label="Clear search">Clear</button>
+            </div>
+            <ul id="searchSuggestions" class="search-suggestions" role="listbox" aria-live="polite"></ul>
+        </div>
+        
+        <!-- Floating Action Buttons -->
+        <div class="fab-container" aria-label="Actions">
+            <button id="dashboardBtn" class="fab" title="Dashboard" aria-label="Dashboard statistics">
+                <span aria-hidden="true">📊</span>
+            </button>
+            <button id="buildingsBtn" class="fab" title="Buildings" aria-label="Buildings navigation">
+                <span aria-hidden="true">🏢</span>
+            </button>
+            <button id="infoBtn" class="fab" title="Info" aria-label="Selected extinguisher info">
+                <span aria-hidden="true">ℹ️</span>
+            </button>
+            <button id="homeBtn" class="fab" title="Home" aria-label="Show all extinguishers">
+                <span aria-hidden="true">🏠</span>
+            </button>
+        </div>
+        
+        <!-- Dashboard Modal -->
+        <div id="dashboardModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="dashboardTitle">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="dashboardTitle">Dashboard</h2>
+                    <button class="modal-close" data-modal="dashboardModal" aria-label="Close dashboard">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <h3>Total Extinguishers</h3>
+                            <div class="stat-value" id="totalCount">0</div>
+                        </div>
+                        <div class="stat-card stat-card--success">
+                            <h3>Good Condition</h3>
+                            <div class="stat-value" id="goodCount">0</div>
+                        </div>
+                        <div class="stat-card stat-card--warning">
+                            <h3>Inspection Due Soon</h3>
+                            <div class="stat-value" id="dueSoonCount">0</div>
+                        </div>
+                        <div class="stat-card stat-card--error">
+                            <h3>Overdue</h3>
+                            <div class="stat-value" id="overdueCount">0</div>
+                        </div>
+                        <div class="stat-card stat-card--maintenance">
+                            <h3>Maintenance Required</h3>
+                            <div class="stat-value" id="maintenanceCount">0</div>
+                        </div>
+                    </div>
+                    <div class="dashboard-actions">
+                        <button id="exportCSV" class="btn btn--primary">Export CSV</button>
+                        <button id="exportJSON" class="btn btn--secondary">Export JSON</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Buildings Modal -->
+        <div id="buildingsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="buildingsTitle">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="buildingsTitle">Buildings</h2>
+                    <button class="modal-close" data-modal="buildingsModal" aria-label="Close buildings">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="buildings-list" id="buildingsList"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Info Modal -->
+        <div id="infoModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="infoTitle">Extinguisher Information</h2>
+                    <button class="modal-close" data-modal="infoModal" aria-label="Close information">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="extinguisherInfo">
+                        <p>Select a fire extinguisher on the map to view detailed information.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
 </body>
-
 </html>
